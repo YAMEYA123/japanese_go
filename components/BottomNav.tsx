@@ -4,7 +4,8 @@ import { usePathname } from 'next/navigation'
 
 const TABS = [
   { href: '/', label: '首页', icon: '🏠' },
-  { href: '/dramas', label: '日剧', icon: '🎬' },
+  { href: '/dramas', label: '剧・文学', icon: '🎬' },
+  { href: '/gojuuon', label: '五十音', icon: '文' },
   { href: '/practice', label: '练习', icon: '⚡' },
   { href: '/settings', label: '设置', icon: '⚙️' },
 ]

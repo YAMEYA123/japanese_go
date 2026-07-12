@@ -40,6 +40,8 @@ export interface Drama {
   description: string
   word_count: number
   cover_color: string
+  category?: 'drama' | 'book' | 'travel'
+  author?: string
 }
 
 export interface SRSCard {

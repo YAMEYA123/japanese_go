@@ -4,7 +4,7 @@ import { useAppStore } from '@/lib/store'
 import { createClient } from '@/lib/supabase'
 
 export default function SettingsPage() {
-  const { userEmail, setUser, srsCards, streakDays, totalReviewed } = useAppStore()
+  const { userEmail, setUser, srsCards, streakDays, totalReviewed, selectedDramaIds } = useAppStore()
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [syncing, setSyncing] = useState(false)
@@ -13,7 +13,10 @@ export default function SettingsPage() {
   async function handleLogin() {
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.signInWithOtp({ email })
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      })
       if (error) throw error
       setSent(true)
     } catch {
@@ -35,6 +38,7 @@ export default function SettingsPage() {
         srs_cards: srsCards,
         streak_days: streakDays,
         total_reviewed: totalReviewed,
+        selected_drama_ids: selectedDramaIds,
         updated_at: new Date().toISOString(),
       }, { onConflict: 'user_id' })
 

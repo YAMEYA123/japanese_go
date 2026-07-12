@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useAppStore, getTodayWordOfDay } from '@/lib/store'
 import { DRAMAS } from '@/lib/data/dramas'
 import SceneIllustration from '@/components/SceneIllustration'
+import { toRomaji } from '@/lib/romaji'
 
 function getGreeting() {
   const h = new Date().getHours()
@@ -89,17 +90,14 @@ export default function HomePage() {
           </div>
         )}
         <div className="px-4 py-3">
-          {!wordOfDay.drama_id && (
-            <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-3xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }}>
-                {wordOfDay.japanese}
-              </span>
-              <span className="text-stone-400 text-base">{wordOfDay.reading}</span>
-            </div>
-          )}
-          {!wordOfDay.drama_id && (
-            <p className="text-stone-700 font-medium">{wordOfDay.meaning_zh}</p>
-          )}
+          <div className="flex items-baseline gap-2 mb-1">
+            <span className="text-3xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }} translate="no">
+              {wordOfDay.japanese}
+            </span>
+            <span className="text-stone-400 text-base" translate="no">{wordOfDay.reading}</span>
+            <span className="text-stone-300 text-sm">{toRomaji(wordOfDay.reading)}</span>
+          </div>
+          <p className="text-stone-700 font-medium">{wordOfDay.meaning_zh}</p>
           {wordOfDay.scene_context && (
             <p className="text-stone-400 text-xs mt-2 leading-relaxed line-clamp-2">{wordOfDay.scene_context}</p>
           )}

@@ -5,6 +5,7 @@ import { DRAMAS } from '@/lib/data/dramas'
 import { getWordsByDrama } from '@/lib/data/words'
 import { useAppStore } from '@/lib/store'
 import { getSRSLabel } from '@/lib/srs'
+import { toRomaji } from '@/lib/romaji'
 
 export default function DramaDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -61,11 +62,12 @@ export default function DramaDetailPage() {
               className="bg-white rounded-2xl px-4 py-3.5 shadow-sm border border-stone-100 flex items-center gap-3 active:scale-98 transition-transform block"
             >
               <div className="flex-1 min-w-0">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }}>
+                <div className="flex items-baseline gap-2 flex-wrap">
+                  <span className="text-xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }} translate="no">
                     {word.japanese}
                   </span>
-                  <span className="text-stone-400 text-sm">{word.reading}</span>
+                  <span className="text-stone-400 text-sm" translate="no">{word.reading}</span>
+                  <span className="text-stone-300 text-xs">{toRomaji(word.reading)}</span>
                 </div>
                 <p className="text-stone-600 text-sm mt-0.5 truncate">{word.meaning_zh}</p>
               </div>

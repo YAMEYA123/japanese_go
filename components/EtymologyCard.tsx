@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Word, ReviewQuality } from '@/lib/types'
 import { useAppStore } from '@/lib/store'
 import { getSRSLabel } from '@/lib/srs'
+import { toRomaji } from '@/lib/romaji'
 import SceneIllustration from '@/components/SceneIllustration'
 
 const ORIGIN_LABELS: Record<string, { label: string; color: string; desc: string }> = {
@@ -35,7 +36,7 @@ export default function EtymologyCard({ word, onReview, showReviewButtons = fals
         <div className="flex items-start justify-between gap-2">
           <div>
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }}>
+              <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }} translate="no">
                 {word.japanese}
               </span>
               {word.jlpt_level && (
@@ -44,7 +45,10 @@ export default function EtymologyCard({ word, onReview, showReviewButtons = fals
                 </span>
               )}
             </div>
-            <div className="text-lg text-stone-500 mt-0.5">{word.reading}</div>
+            <div className="flex items-baseline gap-2 mt-0.5">
+              <span className="text-lg text-stone-500" translate="no">{word.reading}</span>
+              <span className="text-sm text-stone-400">{toRomaji(word.reading)}</span>
+            </div>
             <div className="text-base font-medium text-stone-800 mt-1">{word.meaning_zh}</div>
           </div>
           <div className="flex flex-col items-end gap-1.5 shrink-0">

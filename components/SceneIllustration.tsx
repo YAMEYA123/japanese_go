@@ -443,31 +443,31 @@ const SCENE_DATA: Record<string, {
     speaker: '今西栄太郎',
     mood: 'tense',
   },
-  // Woman
-  kazoku: {
-    quote: '家族だから、絶対に守る',
-    speaker: '小春',
-    mood: 'warm',
+  // とと姉ちゃん
+  toto_chichi: {
+    quote: '私のととは、死んでもずっとここにいる',
+    speaker: '常子',
+    mood: 'melancholy',
   },
-  mazushisa: {
-    quote: '貧しくても、あなたたちがいる。それだけでいい',
-    speaker: '小春',
-    mood: 'warm',
-  },
-  mamoru: {
-    quote: '守る。絶対に守る。それが私の全部',
-    speaker: '小春',
+  toto_jiritsu: {
+    quote: '自分の足で立ちたい。誰かに頼らなくても',
+    speaker: '常子',
     mood: 'dramatic',
   },
-  kibou: {
-    quote: '希望は捨てない。どんなときも',
-    speaker: '小春',
+  toto_gaman: {
+    quote: '我慢するのに慣れすぎてしまったのかもしれない',
+    speaker: '常子',
+    mood: 'melancholy',
+  },
+  toto_kurashi: {
+    quote: 'よりよい暮らしを、みんなに届けたい',
+    speaker: '常子',
     mood: 'warm',
   },
-  choujo: {
-    quote: '長女だから強くいなきゃって、ずっと思ってた',
-    speaker: '小春',
-    mood: 'melancholy',
+  toto_choujo: {
+    quote: '長女だから、しっかりしなければ',
+    speaker: '常子',
+    mood: 'dramatic',
   },
   // 黒革の手帖
   yabou: {
@@ -495,6 +495,216 @@ const SCENE_DATA: Record<string, {
     speaker: '元子',
     mood: 'tense',
   },
+  // 雪国
+  yuki_mujokan: {
+    quote: '国境の長いトンネルを抜けると雪国であった',
+    speaker: '語り手',
+    mood: 'melancholy',
+  },
+  yuki_kanashimi: {
+    quote: '徒労と知りながら、それでも彼女は愛した',
+    speaker: '駒子',
+    mood: 'melancholy',
+  },
+  yuki_mujaki: {
+    quote: '葉子の声には、この世のものでない透明さがあった',
+    speaker: '語り手',
+    mood: 'lyrical',
+  },
+  yuki_yukikeshiki: {
+    quote: '雪の白さが、すべての罪を隠してくれるようだった',
+    speaker: '島村',
+    mood: 'melancholy',
+  },
+  yuki_munashii: {
+    quote: 'こんなにも美しいのに、こんなにも虚しい',
+    speaker: '島村',
+    mood: 'melancholy',
+  },
+  // 羅生門
+  rash_akuinin: {
+    quote: '悪人になるか、餓死するか。それだけのことだ',
+    speaker: '下人',
+    mood: 'tense',
+  },
+  rash_seizon: {
+    quote: '生きるためならば、何でもするほかあるまい',
+    speaker: '老婆',
+    mood: 'dramatic',
+  },
+  rash_kyoufu: {
+    quote: '羅生門の上には、ただ夜があるばかりだ',
+    speaker: '語り手',
+    mood: 'tense',
+  },
+  rash_roujo: {
+    quote: 'この女の髪を抜いても、地獄へは落ちまい',
+    speaker: '老婆',
+    mood: 'tense',
+  },
+  rash_gizen: {
+    quote: '善悪などというものは、風のふき次第でどうにでもなる',
+    speaker: '語り手',
+    mood: 'melancholy',
+  },
+  // 人間失格
+  ningen_haji: {
+    quote: '恥の多い生涯を送ってきました',
+    speaker: '葉藏',
+    mood: 'melancholy',
+  },
+  ningen_douke: {
+    quote: '道化を演じることが、僕の唯一の生き方だった',
+    speaker: '葉藏',
+    mood: 'melancholy',
+  },
+  ningen_zetsumou: {
+    quote: '人間というものが、わからない',
+    speaker: '葉藏',
+    mood: 'melancholy',
+  },
+  ningen_ningen: {
+    quote: '僕はとうとう人間を失格してしまったのだろうか',
+    speaker: '葉藏',
+    mood: 'dramatic',
+  },
+  ningen_shikkaku: {
+    quote: 'もはや、自分は完全に、人間失格でした',
+    speaker: '葉藏',
+    mood: 'melancholy',
+  },
+  // こころ
+  kokoro_sensei: {
+    quote: '私はあの時、先生の顔に暗い影が射すのを見た',
+    speaker: '私',
+    mood: 'melancholy',
+  },
+  kokoro_kodoku: {
+    quote: '孤独な人間は、孤独の中にしか安住できない',
+    speaker: '先生',
+    mood: 'melancholy',
+  },
+  kokoro_uragiri: {
+    quote: 'あの時、私はKを裏切った。それが私の罪だ',
+    speaker: '先生',
+    mood: 'dramatic',
+  },
+  kokoro_zankoku: {
+    quote: '愛は罪悪の中から生まれたのかもしれない',
+    speaker: '先生',
+    mood: 'tense',
+  },
+  kokoro_kioku: {
+    quote: 'この記憶を、あなたに残して逝きます',
+    speaker: '先生',
+    mood: 'melancholy',
+  },
+  // 点と線
+  ten_alibi: {
+    quote: 'このアリバイは、完璧なはずだった',
+    speaker: '三原警部',
+    mood: 'tense',
+  },
+  ten_jikanhyo: {
+    quote: '時刻表に、たった四分の穴があった',
+    speaker: '三原警部',
+    mood: 'tense',
+  },
+  ten_hanzai: {
+    quote: '犯罪の陰には、必ず権力の臭いがする',
+    speaker: '三原警部',
+    mood: 'dramatic',
+  },
+  ten_kanryou: {
+    quote: '官僚というものは、自分の保身のためなら何でもする',
+    speaker: '語り手',
+    mood: 'tense',
+  },
+  ten_shoko: {
+    quote: '証拠は、時刻表の中に隠れていた',
+    speaker: '三原警部',
+    mood: 'dramatic',
+  },
+  // 容疑者Xの献身
+  yogi_kensin: {
+    quote: '俺にできることは、すべてやった。それだけだ',
+    speaker: '石神',
+    mood: 'dramatic',
+  },
+  yogi_tensai2: {
+    quote: '天才が孤独なのは、当然のことだ',
+    speaker: '湯川',
+    mood: 'melancholy',
+  },
+  yogi_yogisha: {
+    quote: '容疑者Xとは、いったい誰なのか',
+    speaker: '湯川',
+    mood: 'tense',
+  },
+  yogi_kanzen: {
+    quote: 'これは完全犯罪だ。論理的に、完璧な',
+    speaker: '石神',
+    mood: 'dramatic',
+  },
+  yogi_ai: {
+    quote: 'あなたのためなら、すべてを失ってもいい',
+    speaker: '石神',
+    mood: 'melancholy',
+  },
+  // 旅游场景：酒店
+  hotel_checkin: { quote: 'チェックインをお願いします', speaker: 'フロントにて', mood: 'lyrical' },
+  hotel_yoyaku: { quote: '山田という名前で予約しています', speaker: '旅行者', mood: 'lyrical' },
+  hotel_heya: { quote: '眺めの良い部屋はありますか？', speaker: '旅行者', mood: 'warm' },
+  hotel_front: { quote: 'フロントに電話してみましょう', speaker: 'ガイドブック', mood: 'lyrical' },
+  hotel_choshoku: { quote: '朝食付きのプランをお願いします', speaker: '旅行者', mood: 'warm' },
+  hotel_ryoshusho: { quote: '領収書をいただけますか？', speaker: 'ビジネス旅行者', mood: 'lyrical' },
+  hotel_checkout: { quote: 'チェックアウトは何時ですか？', speaker: 'フロント', mood: 'lyrical' },
+  hotel_encho: { quote: 'もう一泊延長できますか？', speaker: '旅行者', mood: 'warm' },
+  // 旅游场景：餐厅
+  rest_chumon: { quote: 'ご注文はお決まりですか？', speaker: '店員', mood: 'warm' },
+  rest_osusume: { quote: 'おすすめは何ですか？', speaker: '旅行者', mood: 'warm' },
+  rest_okaikei: { quote: 'お会計をお願いします', speaker: '旅行者', mood: 'lyrical' },
+  rest_kinenseki: { quote: '禁煙席をお願いします', speaker: '旅行者', mood: 'lyrical' },
+  rest_arerugii: { quote: '卵のアレルギーがあります', speaker: '旅行者', mood: 'tense' },
+  rest_okawari: { quote: 'ご飯おかわりできますか？', speaker: '旅行者', mood: 'warm' },
+  rest_teishoku: { quote: '日替わり定食をください', speaker: '旅行者', mood: 'warm' },
+  rest_gochisou: { quote: 'ごちそうさまでした！', speaker: '旅行者', mood: 'warm' },
+  // 旅游场景：交通
+  trans_norikae: { quote: '渋谷で山手線に乗り換えます', speaker: 'アナウンス', mood: 'lyrical' },
+  trans_shiteiseki: { quote: '窓側の指定席をお願いします', speaker: '旅行者', mood: 'lyrical' },
+  trans_ofuku: { quote: '東京から大阪まで往復一枚ください', speaker: '旅行者', mood: 'lyrical' },
+  trans_kaisatsu: { quote: '改札を出たところで待ち合わせしましょう', speaker: '旅行者', mood: 'lyrical' },
+  trans_chien: { quote: '電車が遅延しています、申し訳ございません', speaker: 'アナウンス', mood: 'tense' },
+  trans_jiyuseki: { quote: '自由席は先着順です', speaker: 'アナウンス', mood: 'lyrical' },
+  trans_home: { quote: '何番ホームから出ますか？', speaker: '旅行者', mood: 'lyrical' },
+  trans_shuden: { quote: '終電に乗り遅れた！', speaker: '旅行者', mood: 'dramatic' },
+  // 旅游场景：购物
+  shop_shichaku: { quote: '試着してもいいですか？', speaker: '旅行者', mood: 'warm' },
+  shop_saizu: { quote: 'Mサイズはありますか？', speaker: '旅行者', mood: 'lyrical' },
+  shop_waribiki: { quote: 'セール中！30%割引！', speaker: '店員', mood: 'warm' },
+  shop_resito: { quote: 'レシートはご入り用ですか？', speaker: '店員', mood: 'lyrical' },
+  shop_menzei: { quote: 'パスポートを見せてください', speaker: '店員', mood: 'lyrical' },
+  shop_fukuro: { quote: '袋はご入り用ですか？', speaker: 'レジ担当', mood: 'lyrical' },
+  shop_zaiko: { quote: '在庫切れですが、取り寄せできます', speaker: '店員', mood: 'melancholy' },
+  shop_ninki: { quote: 'これが今一番人気の商品です！', speaker: '店員', mood: 'warm' },
+  // 旅游场景：就医
+  med_shoujou: { quote: 'どんな症状ですか？', speaker: '医師', mood: 'tense' },
+  med_shohosen: { quote: '処方箋を薬局に持って行ってください', speaker: '医師', mood: 'lyrical' },
+  med_hokensho: { quote: '保険証はお持ちですか？', speaker: '受付', mood: 'lyrical' },
+  med_yakkyoku: { quote: '近くに薬局はありますか？', speaker: '旅行者', mood: 'lyrical' },
+  med_netsu: { quote: '熱があります、38度です', speaker: '旅行者', mood: 'tense' },
+  med_zutsuu: { quote: '頭痛がします', speaker: '旅行者', mood: 'tense' },
+  med_itsuu: { quote: '胃が痛いです', speaker: '旅行者', mood: 'tense' },
+  med_kyukyusha: { quote: '119番に電話して救急車を呼びましょう', speaker: 'ガイド', mood: 'dramatic' },
+  // 旅游场景：问路
+  dir_chikaku: { quote: '近くにコンビニはありますか？', speaker: '旅行者', mood: 'lyrical' },
+  dir_ussen: { quote: '交差点を右折してください', speaker: '通行人', mood: 'lyrical' },
+  dir_sasetsu: { quote: '最初の角を左折してください', speaker: '通行人', mood: 'lyrical' },
+  dir_kosaten: { quote: '次の交差点を渡ってください', speaker: '通行人', mood: 'lyrical' },
+  dir_mejirushi: { quote: 'コンビニが目印です', speaker: '通行人', mood: 'warm' },
+  dir_toho: { quote: '駅から徒歩5分です', speaker: 'パンフレット', mood: 'lyrical' },
+  dir_maigo: { quote: '迷子になってしまいました', speaker: '旅行者', mood: 'melancholy' },
+  dir_chizu: { quote: '地図を見せてもらえますか？', speaker: '旅行者', mood: 'lyrical' },
 }
 
 const MOOD_STYLES: Record<string, {

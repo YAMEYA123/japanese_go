@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import BottomNav from '@/components/BottomNav'
+import AuthProvider from '@/components/AuthProvider'
 
 export const metadata: Metadata = {
   title: '日語追劇學習',
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ja">
       <head>
+        <meta name="google" content="notranslate" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -34,10 +36,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180.png" />
       </head>
       <body className="bg-[#F8F4ED] min-h-screen" style={{ fontFamily: 'Noto Sans JP, sans-serif' }}>
-        <div className="max-w-lg mx-auto pb-20">
-          {children}
-        </div>
-        <BottomNav />
+        <AuthProvider>
+          <div className="max-w-lg mx-auto pb-20">
+            {children}
+          </div>
+          <BottomNav />
+        </AuthProvider>
       </body>
     </html>
   )

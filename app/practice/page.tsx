@@ -6,8 +6,78 @@ import { WORDS, getAllWords } from '@/lib/data/words'
 import { getDueCards, getNewCards } from '@/lib/srs'
 import EtymologyCard from '@/components/EtymologyCard'
 import { Word, ReviewQuality } from '@/lib/types'
+import { toRomaji } from '@/lib/romaji'
+import Link from 'next/link'
 
-type Mode = '1min' | '5min' | '10min' | null
+type Mode = '1min' | '5min' | '10min' | 'n2' | null
+
+function FlashCard({ word, onReview }: { word: Word; onReview: (q: ReviewQuality) => void }) {
+  const [flipped, setFlipped] = useState(false)
+
+  return (
+    <div className="space-y-4">
+      <div
+        onClick={() => !flipped && setFlipped(true)}
+        className="bg-white rounded-3xl shadow-sm border border-stone-100 p-8 text-center cursor-pointer active:scale-98 transition-transform min-h-[220px] flex flex-col items-center justify-center"
+      >
+        <p className="text-xs text-stone-400 mb-4 uppercase tracking-wide">
+          {flipped ? '读音 & 含义' : '点击翻转查看读音'}
+        </p>
+        <div
+          className="text-5xl font-bold text-stone-900 mb-3"
+          style={{ fontFamily: 'Noto Serif JP, serif' }}
+          translate="no"
+        >
+          {word.japanese}
+        </div>
+        {flipped ? (
+          <div className="space-y-1 mt-2">
+            <div className="flex items-baseline gap-2 justify-center">
+              <span className="text-xl text-stone-500" translate="no">{word.reading}</span>
+              <span className="text-base text-stone-400">{toRomaji(word.reading)}</span>
+            </div>
+            <p className="text-stone-700 font-medium text-lg mt-2">{word.meaning_zh}</p>
+            {word.scene_context && (
+              <p className="text-stone-400 text-xs mt-3 leading-relaxed max-w-xs mx-auto line-clamp-3">
+                {word.scene_context}
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="mt-4 text-stone-300 text-3xl">？</div>
+        )}
+      </div>
+
+      {flipped ? (
+        <div className="space-y-2">
+          <p className="text-center text-xs text-stone-400 mb-1">记住了吗？</p>
+          <div className="grid grid-cols-3 gap-2">
+            {([
+              { q: 1 as ReviewQuality, label: '没记住', color: 'bg-red-50 text-red-600 border-red-100' },
+              { q: 3 as ReviewQuality, label: '有印象', color: 'bg-amber-50 text-amber-600 border-amber-100' },
+              { q: 5 as ReviewQuality, label: '记住了！', color: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
+            ]).map(item => (
+              <button
+                key={item.q}
+                onClick={() => { setFlipped(false); onReview(item.q) }}
+                className={`border rounded-xl py-3 text-sm font-medium ${item.color} active:scale-95 transition-transform`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => setFlipped(true)}
+          className="w-full bg-red-600 text-white rounded-2xl py-4 font-medium text-base active:bg-red-700 transition-colors"
+        >
+          翻转查看
+        </button>
+      )}
+    </div>
+  )
+}
 
 function PracticeContent() {
   const router = useRouter()
@@ -26,20 +96,26 @@ function PracticeContent() {
     const newIds = getNewCards(srsCards, allIds)
 
     let picked: Word[] = []
-    if (m === '1min') {
+    if (m === 'n2') {
+      const n2Words = WORDS.filter(w => w.jlpt_level === 'N2')
+      const n2Due = n2Words.filter(w => due.includes(w.id))
+      const n2New = n2Words.filter(w => !srsCards[w.id] || srsCards[w.id].repetitions === 0)
+      picked = [...n2Due, ...n2New].slice(0, 10)
+      if (picked.length === 0) picked = n2Words.slice(0, 10)
+    } else if (m === '1min') {
       const id = due[0] ?? newIds[0] ?? allIds[0]
       picked = [WORDS.find(w => w.id === id)!].filter(Boolean)
     } else if (m === '5min') {
-      const pool = [...due, ...newIds].slice(0, 3)
+      const pool = [...due, ...newIds].slice(0, 5)
       picked = pool.map(id => WORDS.find(w => w.id === id)!).filter(Boolean)
       if (picked.length < 3) {
-        const extra = allIds.filter(id => !pool.includes(id)).slice(0, 3 - picked.length)
+        const extra = allIds.filter(id => !pool.includes(id)).slice(0, 5 - picked.length)
         picked = [...picked, ...extra.map(id => WORDS.find(w => w.id === id)!).filter(Boolean)]
       }
     } else {
-      const pool = [...due, ...newIds.slice(0, 5)]
+      const pool = [...due, ...newIds.slice(0, 10)]
       picked = pool.map(id => WORDS.find(w => w.id === id)!).filter(Boolean)
-      if (picked.length === 0) picked = WORDS.slice(0, 5)
+      if (picked.length === 0) picked = WORDS.slice(0, 10)
     }
 
     setSessionWords(picked)
@@ -60,7 +136,6 @@ function PracticeContent() {
     }
   }
 
-  // Mode selector
   if (!mode) {
     return (
       <div className="px-4 pt-8">
@@ -70,9 +145,10 @@ function PracticeContent() {
         <p className="text-stone-500 text-sm mb-6">选择今天有多少时间</p>
         <div className="space-y-3">
           {([
-            { m: '1min' as Mode, emoji: '⚡', label: '1分钟', sub: '浏览一张词源卡，轻松完成', color: 'from-yellow-50 to-orange-50 border-orange-100' },
-            { m: '5min' as Mode, emoji: '📖', label: '5分钟', sub: '3个词，场景填空练习', color: 'from-blue-50 to-indigo-50 border-blue-100' },
-            { m: '10min' as Mode, emoji: '🎯', label: '10分钟', sub: '全部到期词条，系统复习', color: 'from-emerald-50 to-teal-50 border-emerald-100' },
+            { m: '1min' as Mode, emoji: '⚡', label: '1分钟', sub: '1张词卡：看词→翻转→评分', color: 'from-yellow-50 to-orange-50 border-orange-100' },
+            { m: '5min' as Mode, emoji: '📖', label: '5分钟', sub: '5个词，翻卡式快速复习', color: 'from-blue-50 to-indigo-50 border-blue-100' },
+            { m: '10min' as Mode, emoji: '🎯', label: '10分钟', sub: '所有到期词条 + 详细词源解析', color: 'from-emerald-50 to-teal-50 border-emerald-100' },
+            { m: 'n2' as Mode, emoji: '📝', label: 'N2 翻卡', sub: 'N2词汇翻卡专项练习', color: 'from-violet-50 to-purple-50 border-purple-100' },
           ]).map(item => (
             <button
               key={item.m!}
@@ -88,11 +164,21 @@ function PracticeContent() {
             </button>
           ))}
         </div>
+        <Link
+          href="/n2-quiz"
+          className="w-full bg-gradient-to-br from-red-50 to-rose-50 border border-red-100 rounded-2xl px-5 py-4 flex items-center gap-4 active:scale-98 transition-transform mt-1"
+        >
+          <span className="text-3xl">🎌</span>
+          <div className="text-left">
+            <p className="font-bold text-stone-800">N2 四択テスト</p>
+            <p className="text-stone-500 text-sm">30道N2词义选择题</p>
+          </div>
+          <span className="ml-auto text-stone-300 text-xl">→</span>
+        </Link>
       </div>
     )
   }
 
-  // Done screen
   if (done) {
     return (
       <div className="px-4 pt-16 text-center">
@@ -103,16 +189,10 @@ function PracticeContent() {
         <p className="text-stone-600 mb-1">本次学习了 <strong>{reviewed}</strong> 个词</p>
         <p className="text-stone-400 text-sm mb-8">坚持每天练习，记忆更牢固</p>
         <div className="space-y-3">
-          <button
-            onClick={() => startSession(mode)}
-            className="w-full bg-red-600 text-white rounded-2xl py-3.5 font-medium active:bg-red-700 transition-colors"
-          >
+          <button onClick={() => startSession(mode)} className="w-full bg-red-600 text-white rounded-2xl py-3.5 font-medium active:bg-red-700 transition-colors">
             再来一组
           </button>
-          <button
-            onClick={() => { setMode(null); router.push('/') }}
-            className="w-full bg-stone-100 text-stone-700 rounded-2xl py-3.5 font-medium"
-          >
+          <button onClick={() => { setMode(null); router.push('/') }} className="w-full bg-stone-100 text-stone-700 rounded-2xl py-3.5 font-medium">
             回到首页
           </button>
         </div>
@@ -125,28 +205,25 @@ function PracticeContent() {
 
   return (
     <div className="px-4 pt-6">
-      {/* Progress */}
       <div className="flex items-center justify-between mb-4">
         <button onClick={() => setMode(null)} className="text-stone-400 text-sm">✕</button>
         <div className="flex gap-1.5">
           {sessionWords.map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full transition-all ${
-                i < index ? 'bg-red-500 w-6' : i === index ? 'bg-red-300 w-6' : 'bg-stone-200 w-4'
-              }`}
-            />
+            <div key={i} className={`h-1.5 rounded-full transition-all ${i < index ? 'bg-red-500 w-6' : i === index ? 'bg-red-300 w-6' : 'bg-stone-200 w-4'}`} />
           ))}
         </div>
         <span className="text-stone-400 text-sm">{index + 1}/{sessionWords.length}</span>
       </div>
-
-      <EtymologyCard
-        word={currentWord}
-        onReview={handleReview}
-        showReviewButtons={true}
-        compact={mode === '1min'}
-      />
+      {mode === '10min' ? (
+        <EtymologyCard word={currentWord} onReview={handleReview} showReviewButtons={true} compact={false} />
+      ) : (
+        <FlashCard word={currentWord} onReview={handleReview} />
+      )}
+      {mode === 'n2' && (
+        <div className="mt-3 text-center">
+          <span className="text-xs text-purple-400 bg-purple-50 px-2 py-1 rounded-full">N2 専項</span>
+        </div>
+      )}
     </div>
   )
 }
