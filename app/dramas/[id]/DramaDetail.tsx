@@ -13,9 +13,82 @@ function speakJa(text: string) {
 import Link from 'next/link'
 import { DRAMAS } from '@/lib/data/dramas'
 import { getWordsByDrama } from '@/lib/data/words'
+import { getLinesByDrama, DramaLine } from '@/lib/data/drama-lines'
 import { useAppStore } from '@/lib/store'
 import { getSRSLabel } from '@/lib/srs'
 import { toRomaji } from '@/lib/romaji'
+
+const LEVEL_COLORS: Record<string, string> = {
+  N5: 'bg-stone-100 text-stone-600',
+  N4: 'bg-blue-100 text-blue-700',
+  N3: 'bg-teal-100 text-teal-700',
+  N2: 'bg-violet-100 text-violet-700',
+  N1: 'bg-red-100 text-red-700',
+}
+
+function LineCard({ line }: { line: DramaLine }) {
+  const [expanded, setExpanded] = useState(false)
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden">
+      <div className="px-4 pt-4 pb-3">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <span className="text-xs text-stone-400 bg-stone-50 px-2 py-0.5 rounded-full shrink-0">
+            {line.speaker}
+          </span>
+          <button
+            onClick={() => speakJa(line.japanese)}
+            className="text-sm opacity-40 active:opacity-20 shrink-0"
+            aria-label="朗读"
+          >🔊</button>
+        </div>
+        <p
+          className="text-stone-900 text-base font-medium leading-relaxed"
+          style={{ fontFamily: 'Noto Serif JP, serif' }}
+          translate="no"
+        >
+          {line.japanese}
+        </p>
+        <p className="text-stone-400 text-xs mt-1 leading-relaxed" translate="no">
+          {line.reading}
+        </p>
+        <p className="text-stone-600 text-sm mt-2 leading-relaxed">
+          {line.translation_zh}
+        </p>
+        <p className="text-stone-400 text-xs mt-1.5 italic leading-relaxed">
+          {line.context}
+        </p>
+      </div>
+      {line.grammar_notes.length > 0 && (
+        <div className="border-t border-stone-100">
+          <button
+            onClick={() => setExpanded(v => !v)}
+            className="w-full px-4 py-2.5 flex items-center justify-between text-xs text-violet-600 font-medium"
+          >
+            <span>📖 语法解析（{line.grammar_notes.length}个知识点）</span>
+            <span className="text-stone-300">{expanded ? '▲' : '▼'}</span>
+          </button>
+          {expanded && (
+            <div className="px-4 pb-4 space-y-3">
+              {line.grammar_notes.map((note, i) => (
+                <div key={i} className="bg-violet-50 rounded-xl px-3 py-2.5 border border-violet-100">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold text-violet-700" translate="no">{note.point}</span>
+                    {note.level && (
+                      <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${LEVEL_COLORS[note.level]}`}>
+                        {note.level}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-stone-600 text-xs leading-relaxed">{note.explanation}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
 
 const ORIGIN_COLORS: Record<string, string> = {
   yamato: 'bg-emerald-100 text-emerald-700',
@@ -34,6 +107,7 @@ export default function DramaDetail() {
   const { id } = useParams<{ id: string }>()
   const drama = DRAMAS.find(d => d.id === id)
   const words = getWordsByDrama(id)
+  const lines = getLinesByDrama(id)
   const srsCards = useAppStore(s => s.srsCards)
   const showRomaji = useAppStore(s => s.showRomaji)
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
@@ -66,6 +140,17 @@ export default function DramaDetail() {
       <div className="bg-white px-4 py-3 border-b border-stone-100">
         <p className="text-stone-600 text-sm leading-relaxed">{drama.description}</p>
       </div>
+      {lines.length > 0 && (
+        <div className="px-4 pt-4 space-y-2.5">
+          <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3">
+            经典台词 ({lines.length})
+          </h2>
+          {lines.map(line => (
+            <LineCard key={line.id} line={line} />
+          ))}
+        </div>
+      )}
+
       <div className="px-4 pt-4 space-y-2.5">
         <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3">
           剧集词条 ({words.length})

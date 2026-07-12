@@ -2,6 +2,15 @@
 
 import { useState } from 'react'
 
+function speakJa(text: string) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return
+  window.speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(text)
+  u.lang = 'ja-JP'
+  u.rate = 0.85
+  window.speechSynthesis.speak(u)
+}
+
 type KanaCell = {
   kana: string
   romaji: string
@@ -455,6 +464,7 @@ function KanaGrid({
                     if (!cell) return
                     if (isSel) { onSelect(null); return }
                     onSelect({ sectionId: section.id, rowIndex, colIndex, data: cell })
+                    speakJa(cell.kana)
                   }}
                   className={`border-l border-stone-100 flex flex-col items-center justify-center py-2 px-1 transition-all duration-150 ${
                     cell ? (isSel ? 'bg-red-50 cursor-pointer' : 'cursor-pointer active:bg-red-50') : 'bg-stone-50/40'
@@ -526,22 +536,35 @@ export default function GojuuonPage() {
         {/* Detail Panel */}
         {selected?.data && (
           <div className="bg-white rounded-2xl shadow-md border border-stone-100 mb-5 p-5 flex items-center gap-5">
-            <div
-              className="text-5xl font-bold text-red-700 leading-none select-none w-16 text-center flex-shrink-0"
+            <button
+              onClick={() => speakJa(selected.data!.kana)}
+              className="text-5xl font-bold text-red-700 leading-none select-none w-16 text-center flex-shrink-0 active:opacity-60 transition-opacity"
               style={{ fontFamily: 'Noto Serif JP, serif' }}
               translate="no"
+              aria-label="朗读假名"
             >
               {selected.data.kana}
-            </div>
+            </button>
             <div className="flex-1 min-w-0">
               <div className="text-lg font-bold text-stone-700 mb-1 uppercase tracking-widest">
                 {selected.data.romaji}
               </div>
-              <div className="flex items-baseline gap-2 flex-wrap">
-                <span className="text-base font-semibold text-stone-800" style={{ fontFamily: 'Noto Serif JP, serif' }} translate="no">
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  onClick={() => speakJa(selected.data!.example)}
+                  className="text-base font-semibold text-stone-800 active:opacity-60 transition-opacity"
+                  style={{ fontFamily: 'Noto Serif JP, serif' }}
+                  translate="no"
+                  aria-label="朗读例词"
+                >
                   {selected.data.example}
-                </span>
+                </button>
                 <span className="text-sm text-stone-400">— {selected.data.exampleMeaning}</span>
+                <button
+                  onClick={() => speakJa(selected.data!.example)}
+                  className="text-sm opacity-40 active:opacity-20 ml-auto"
+                  aria-label="朗读例词"
+                >🔊</button>
               </div>
             </div>
           </div>
