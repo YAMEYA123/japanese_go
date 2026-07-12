@@ -11,46 +11,69 @@ import Link from 'next/link'
 
 type Mode = '1min' | '5min' | '10min' | 'n2' | null
 
+function speakJa(text: string) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return
+  window.speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(text)
+  u.lang = 'ja-JP'
+  u.rate = 0.85
+  window.speechSynthesis.speak(u)
+}
+
 function FlashCard({ word, onReview }: { word: Word; onReview: (q: ReviewQuality) => void }) {
   const [flipped, setFlipped] = useState(false)
 
+  function handleFlip() {
+    if (!flipped) {
+      setFlipped(true)
+      // 翻转后自动朗读
+      setTimeout(() => speakJa(word.reading || word.japanese), 300)
+    }
+  }
+
   return (
     <div className="space-y-4">
+      {/* 正面：中文意思；反面：日语读音 */}
       <div
-        onClick={() => !flipped && setFlipped(true)}
-        className="bg-white rounded-3xl shadow-sm border border-stone-100 p-8 text-center cursor-pointer active:scale-98 transition-transform min-h-[220px] flex flex-col items-center justify-center"
+        onClick={handleFlip}
+        className="bg-white rounded-3xl shadow-sm border border-stone-100 p-8 text-center cursor-pointer active:scale-98 transition-transform min-h-[240px] flex flex-col items-center justify-center"
       >
-        <p className="text-xs text-stone-400 mb-4 uppercase tracking-wide">
-          {flipped ? '读音 & 含义' : '点击翻转查看读音'}
-        </p>
-        <div
-          className="text-5xl font-bold text-stone-900 mb-3"
-          style={{ fontFamily: 'Noto Serif JP, serif' }}
-          translate="no"
-        >
-          {word.japanese}
-        </div>
-        {flipped ? (
-          <div className="space-y-1 mt-2">
-            <div className="flex items-baseline gap-2 justify-center">
-              <span className="text-xl text-stone-500" translate="no">{word.reading}</span>
-              <span className="text-base text-stone-400">{toRomaji(word.reading)}</span>
-            </div>
-            <p className="text-stone-700 font-medium text-lg mt-2">{word.meaning_zh}</p>
+        {!flipped ? (
+          <>
+            <p className="text-xs text-stone-400 mb-5 uppercase tracking-wide">这个词的日语怎么说？</p>
+            <p className="text-2xl font-bold text-stone-800 mb-2">{word.meaning_zh}</p>
             {word.scene_context && (
-              <p className="text-stone-400 text-xs mt-3 leading-relaxed max-w-xs mx-auto line-clamp-3">
+              <p className="text-stone-400 text-xs mt-3 leading-relaxed max-w-xs mx-auto line-clamp-2">
                 {word.scene_context}
               </p>
             )}
-          </div>
+            <div className="mt-6 text-stone-300 text-3xl">？</div>
+          </>
         ) : (
-          <div className="mt-4 text-stone-300 text-3xl">？</div>
+          <>
+            <p className="text-xs text-stone-400 mb-4 uppercase tracking-wide">日语读音</p>
+            <div
+              className="text-5xl font-bold text-stone-900 mb-3"
+              style={{ fontFamily: 'Noto Serif JP, serif' }}
+              translate="no"
+            >
+              {word.japanese}
+            </div>
+            <div className="flex items-baseline gap-2 justify-center mb-1">
+              <span className="text-xl text-red-600 font-medium" translate="no">{word.reading}</span>
+              <button
+                onClick={e => { e.stopPropagation(); speakJa(word.reading || word.japanese) }}
+                className="text-base opacity-60 active:opacity-30"
+              >🔊</button>
+            </div>
+            <span className="text-sm text-stone-400">{toRomaji(word.reading)}</span>
+          </>
         )}
       </div>
 
       {flipped ? (
         <div className="space-y-2">
-          <p className="text-center text-xs text-stone-400 mb-1">记住了吗？</p>
+          <p className="text-center text-xs text-stone-400 mb-1">读音记住了吗？</p>
           <div className="grid grid-cols-3 gap-2">
             {([
               { q: 1 as ReviewQuality, label: '没记住', color: 'bg-red-50 text-red-600 border-red-100' },
@@ -69,10 +92,10 @@ function FlashCard({ word, onReview }: { word: Word; onReview: (q: ReviewQuality
         </div>
       ) : (
         <button
-          onClick={() => setFlipped(true)}
+          onClick={handleFlip}
           className="w-full bg-red-600 text-white rounded-2xl py-4 font-medium text-base active:bg-red-700 transition-colors"
         >
-          翻转查看
+          翻转查看读音
         </button>
       )}
     </div>

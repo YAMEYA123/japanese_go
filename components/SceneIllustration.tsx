@@ -1,6 +1,16 @@
 'use client'
+import { useState, useCallback } from 'react'
 import { Word } from '@/lib/types'
 import { DRAMAS } from '@/lib/data/dramas'
+
+function speakJa(text: string) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return
+  window.speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(text)
+  u.lang = 'ja-JP'
+  u.rate = 0.85
+  window.speechSynthesis.speak(u)
+}
 
 // Per-word scene data: iconic quote + visual mood
 const SCENE_DATA: Record<string, {
@@ -837,9 +847,18 @@ export default function SceneIllustration({ word }: Props) {
 
         {/* Bottom: quote */}
         <div className="mt-3 border-t pt-3" style={{ borderColor: style.textDim + '44' }}>
-          <p className="text-sm leading-relaxed italic" style={{ color: style.textLight }}>
-            「{shortQuote}」
-          </p>
+          <div className="flex items-start gap-2">
+            <p className="text-sm leading-relaxed italic flex-1" style={{ color: style.textLight }}>
+              「{shortQuote}」
+            </p>
+            <button
+              onClick={() => speakJa(scene.quote_reading || scene.quote)}
+              className="text-base opacity-60 active:opacity-30 shrink-0 mt-0.5"
+              aria-label="朗读台词"
+            >
+              🔊
+            </button>
+          </div>
           {scene.speaker && (
             <p className="text-xs mt-1" style={{ color: style.textDim }}>
               — {scene.speaker}

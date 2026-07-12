@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Word, ReviewQuality } from '@/lib/types'
 import { useAppStore } from '@/lib/store'
 import { getSRSLabel } from '@/lib/srs'
@@ -20,8 +20,25 @@ interface Props {
   compact?: boolean
 }
 
+function useSpeakJapanese() {
+  const [speaking, setSpeaking] = useState(false)
+  const speak = useCallback((text: string) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return
+    window.speechSynthesis.cancel()
+    const utter = new SpeechSynthesisUtterance(text)
+    utter.lang = 'ja-JP'
+    utter.rate = 0.85
+    utter.onstart = () => setSpeaking(true)
+    utter.onend = () => setSpeaking(false)
+    utter.onerror = () => setSpeaking(false)
+    window.speechSynthesis.speak(utter)
+  }, [])
+  return { speak, speaking }
+}
+
 export default function EtymologyCard({ word, onReview, showReviewButtons = false, compact = false }: Props) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
+  const { speak, speaking } = useSpeakJapanese()
   const srsCards = useAppStore(s => s.srsCards)
   const srsStatus = getSRSLabel(srsCards[word.id])
   const origin = ORIGIN_LABELS[word.etymology.origin_type]
@@ -44,6 +61,13 @@ export default function EtymologyCard({ word, onReview, showReviewButtons = fals
                   {word.jlpt_level}
                 </span>
               )}
+              <button
+                onClick={() => speak(word.reading || word.japanese)}
+                className={`text-xl leading-none transition-opacity ${speaking ? 'opacity-40' : 'opacity-70 active:opacity-40'}`}
+                aria-label="朗读"
+              >
+                🔊
+              </button>
             </div>
             <div className="flex items-baseline gap-2 mt-0.5">
               <span className="text-lg text-stone-500" translate="no">{word.reading}</span>
