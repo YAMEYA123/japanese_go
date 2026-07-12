@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { useAppStore, getTodayWordOfDay } from '@/lib/store'
 import { DRAMAS } from '@/lib/data/dramas'
+import { getTodayQuote } from '@/lib/data/quotes'
 import SceneIllustration from '@/components/SceneIllustration'
 import { toRomaji } from '@/lib/romaji'
 
@@ -17,6 +18,7 @@ export default function HomePage() {
   const { streakDays, srsCards, selectedDramaIds, getDueCount, showRomaji } = useAppStore()
   const greeting = getGreeting()
   const wordOfDay = getTodayWordOfDay()
+  const quoteOfDay = getTodayQuote()
   const dueCount = getDueCount()
   const totalLearned = Object.values(srsCards).filter(c => c.repetitions > 0).length
   const myDramas = DRAMAS.filter(d => selectedDramaIds.includes(d.id))
@@ -101,6 +103,34 @@ export default function HomePage() {
           {wordOfDay.scene_context && (
             <p className="text-stone-400 text-xs mt-2 leading-relaxed line-clamp-2">{wordOfDay.scene_context}</p>
           )}
+        </div>
+      </div>
+
+      {/* Quote of the day */}
+      <div className="bg-gradient-to-br from-stone-900 to-stone-800 rounded-2xl shadow-sm overflow-hidden">
+        <div className="px-4 py-3 border-b border-white/10">
+          <span className="text-xs font-medium text-stone-400 uppercase tracking-wide">🌸 今日一句</span>
+        </div>
+        <div className="px-4 py-4">
+          <p
+            className="text-white text-base font-medium leading-relaxed"
+            style={{ fontFamily: 'Noto Serif JP, serif' }}
+            translate="no"
+          >
+            {quoteOfDay.japanese}
+          </p>
+          <p className="text-stone-400 text-xs mt-1.5 leading-relaxed" translate="no">
+            {quoteOfDay.reading}
+          </p>
+          <p className="text-stone-300 text-sm mt-2 leading-relaxed">
+            {quoteOfDay.meaning_zh}
+          </p>
+          <p className="text-stone-500 text-xs mt-2.5">
+            — {quoteOfDay.author_zh}
+            {quoteOfDay.author !== quoteOfDay.author_zh && (
+              <span translate="no"> / {quoteOfDay.author}</span>
+            )}
+          </p>
         </div>
       </div>
 
