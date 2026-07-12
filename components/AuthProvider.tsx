@@ -7,7 +7,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const { setUser, syncFromServer } = useAppStore()
 
   useEffect(() => {
-    useAppStore.persist.rehydrate()
+    useAppStore.getState().hydrate()
 
     const supabase = createClient()
 
