@@ -1,5 +1,15 @@
 'use client'
+import { useState } from 'react'
 import { useParams } from 'next/navigation'
+
+function speakJa(text: string) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return
+  window.speechSynthesis.cancel()
+  const u = new SpeechSynthesisUtterance(text)
+  u.lang = 'ja-JP'
+  u.rate = 0.85
+  window.speechSynthesis.speak(u)
+}
 import Link from 'next/link'
 import { DRAMAS } from '@/lib/data/dramas'
 import { getWordsByDrama } from '@/lib/data/words'
@@ -25,6 +35,17 @@ export default function DramaDetail() {
   const drama = DRAMAS.find(d => d.id === id)
   const words = getWordsByDrama(id)
   const srsCards = useAppStore(s => s.srsCards)
+  const [revealed, setRevealed] = useState<Set<string>>(new Set())
+
+  function toggleReveal(wordId: string, e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    setRevealed(prev => {
+      const next = new Set(prev)
+      next.has(wordId) ? next.delete(wordId) : next.add(wordId)
+      return next
+    })
+  }
 
   if (!drama) return <div className="px-4 pt-8 text-stone-500">未找到剧集</div>
 
@@ -63,8 +84,24 @@ export default function DramaDetail() {
                   </span>
                   <span className="text-stone-400 text-sm" translate="no">{word.reading}</span>
                   <span className="text-stone-300 text-xs">{toRomaji(word.reading)}</span>
+                  <button
+                    onClick={e => { e.preventDefault(); e.stopPropagation(); speakJa(word.reading || word.japanese) }}
+                    className="text-sm opacity-50 active:opacity-20 leading-none"
+                    aria-label="朗读"
+                  >🔊</button>
                 </div>
-                <p className="text-stone-600 text-sm mt-0.5 truncate">{word.meaning_zh}</p>
+                <div
+                  className="mt-0.5 flex items-center gap-1"
+                  onClick={e => toggleReveal(word.id, e)}
+                >
+                  {revealed.has(word.id) ? (
+                    <p className="text-stone-600 text-sm truncate">{word.meaning_zh}</p>
+                  ) : (
+                    <span className="text-xs text-stone-300 bg-stone-100 px-2 py-0.5 rounded select-none">
+                      点击显示意思
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="flex flex-col items-end gap-1.5 shrink-0">
                 <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${ORIGIN_COLORS[word.etymology.origin_type]}`}>
