@@ -35,6 +35,7 @@ export default function DramaDetail() {
   const drama = DRAMAS.find(d => d.id === id)
   const words = getWordsByDrama(id)
   const srsCards = useAppStore(s => s.srsCards)
+  const showRomaji = useAppStore(s => s.showRomaji)
   const [revealed, setRevealed] = useState<Set<string>>(new Set())
 
   function toggleReveal(wordId: string, e: React.MouseEvent) {
@@ -83,7 +84,7 @@ export default function DramaDetail() {
                     {word.japanese}
                   </span>
                   <span className="text-stone-400 text-sm" translate="no">{word.reading}</span>
-                  <span className="text-stone-300 text-xs">{toRomaji(word.reading)}</span>
+                  {showRomaji && <span className="text-stone-300 text-xs">{toRomaji(word.reading)}</span>}
                   <button
                     onClick={e => { e.preventDefault(); e.stopPropagation(); speakJa(word.reading || word.japanese) }}
                     className="text-sm opacity-50 active:opacity-20 leading-none"

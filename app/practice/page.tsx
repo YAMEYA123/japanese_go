@@ -22,6 +22,7 @@ function speakJa(text: string) {
 
 function FlashCard({ word, onReview }: { word: Word; onReview: (q: ReviewQuality) => void }) {
   const [flipped, setFlipped] = useState(false)
+  const showRomaji = useAppStore(s => s.showRomaji)
 
   function handleFlip() {
     if (!flipped) {
@@ -66,7 +67,7 @@ function FlashCard({ word, onReview }: { word: Word; onReview: (q: ReviewQuality
                 className="text-base opacity-60 active:opacity-30"
               >🔊</button>
             </div>
-            <span className="text-sm text-stone-400">{toRomaji(word.reading)}</span>
+            {showRomaji && <span className="text-sm text-stone-400">{toRomaji(word.reading)}</span>}
           </>
         )}
       </div>

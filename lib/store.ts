@@ -11,6 +11,7 @@ interface AppState {
   streakDays: number
   lastStudyDate: string
   totalReviewed: number
+  showRomaji: boolean
   _hydrated: boolean
   setUser: (id: string | null, email: string | null) => void
   selectDrama: (id: string) => void
@@ -19,6 +20,7 @@ interface AppState {
   getDueCount: () => number
   updateStreak: () => void
   syncFromServer: (data: Partial<AppState>) => void
+  setShowRomaji: (v: boolean) => void
   hydrate: () => void
   persist: () => void
 }
@@ -31,6 +33,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
   streakDays: 0,
   lastStudyDate: '',
   totalReviewed: 0,
+  showRomaji: true,
   _hydrated: false,
 
   setUser: (id, email) => set({ userId: id, userEmail: email }),
@@ -81,6 +84,11 @@ export const useAppStore = create<AppState>()((set, get) => ({
 
   syncFromServer: (data) => set(data as AppState),
 
+  setShowRomaji: (v) => {
+    set({ showRomaji: v })
+    get().persist()
+  },
+
   hydrate: () => {
     if (typeof window === 'undefined') return
     try {
@@ -103,6 +111,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
         streakDays: s.streakDays,
         lastStudyDate: s.lastStudyDate,
         totalReviewed: s.totalReviewed,
+        showRomaji: s.showRomaji,
       }))
     } catch {}
   },

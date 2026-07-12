@@ -14,7 +14,7 @@ function getGreeting() {
 }
 
 export default function HomePage() {
-  const { streakDays, srsCards, selectedDramaIds, getDueCount } = useAppStore()
+  const { streakDays, srsCards, selectedDramaIds, getDueCount, showRomaji } = useAppStore()
   const greeting = getGreeting()
   const wordOfDay = getTodayWordOfDay()
   const dueCount = getDueCount()
@@ -95,7 +95,7 @@ export default function HomePage() {
               {wordOfDay.japanese}
             </span>
             <span className="text-stone-400 text-base" translate="no">{wordOfDay.reading}</span>
-            <span className="text-stone-300 text-sm">{toRomaji(wordOfDay.reading)}</span>
+            {showRomaji && <span className="text-stone-300 text-sm">{toRomaji(wordOfDay.reading)}</span>}
           </div>
           <p className="text-stone-700 font-medium">{wordOfDay.meaning_zh}</p>
           {wordOfDay.scene_context && (

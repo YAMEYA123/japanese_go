@@ -4,7 +4,7 @@ import { useAppStore } from '@/lib/store'
 import { createClient } from '@/lib/supabase'
 
 export default function SettingsPage() {
-  const { userEmail, setUser, srsCards, streakDays, totalReviewed, selectedDramaIds } = useAppStore()
+  const { userEmail, setUser, srsCards, streakDays, totalReviewed, selectedDramaIds, showRomaji, setShowRomaji } = useAppStore()
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [syncing, setSyncing] = useState(false)
@@ -57,6 +57,23 @@ export default function SettingsPage() {
       <h1 className="text-2xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }}>
         設定
       </h1>
+
+      {/* Display settings */}
+      <div className="bg-white rounded-2xl p-4 shadow-sm border border-stone-100">
+        <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3">显示设置</h2>
+        <div className="flex items-center justify-between py-1.5">
+          <div>
+            <p className="text-stone-700 text-sm font-medium">显示罗马音</p>
+            <p className="text-stone-400 text-xs mt-0.5">在假名旁边显示拼音式罗马字</p>
+          </div>
+          <button
+            onClick={() => setShowRomaji(!showRomaji)}
+            className={`relative w-11 h-6 rounded-full transition-colors ${showRomaji ? 'bg-red-500' : 'bg-stone-200'}`}
+          >
+            <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${showRomaji ? 'translate-x-5' : 'translate-x-0.5'}`} />
+          </button>
+        </div>
+      </div>
 
       {/* Stats */}
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-stone-100 space-y-2">
