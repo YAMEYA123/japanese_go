@@ -81,6 +81,17 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'nihongo-app-store',
+      storage: typeof window !== 'undefined'
+        ? {
+            getItem: (key) => {
+              const v = localStorage.getItem(key)
+              return v ? JSON.parse(v) : null
+            },
+            setItem: (key, value) => localStorage.setItem(key, JSON.stringify(value)),
+            removeItem: (key) => localStorage.removeItem(key),
+          }
+        : undefined,
+      skipHydration: true,
     }
   )
 )

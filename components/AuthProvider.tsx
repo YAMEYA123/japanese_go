@@ -7,6 +7,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const { setUser, syncFromServer } = useAppStore()
 
   useEffect(() => {
+    useAppStore.persist.rehydrate()
+
     const supabase = createClient()
 
     async function loadProgress(userId: string) {
