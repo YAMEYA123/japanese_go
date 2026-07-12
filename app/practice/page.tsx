@@ -199,6 +199,17 @@ function PracticeContent() {
           </div>
           <span className="ml-auto text-stone-300 text-xl">→</span>
         </Link>
+        <Link
+          href="/travel"
+          className="w-full bg-gradient-to-br from-orange-50 to-amber-50 border border-amber-100 rounded-2xl px-5 py-4 flex items-center gap-4 active:scale-98 transition-transform mt-1"
+        >
+          <span className="text-3xl">✈️</span>
+          <div className="text-left">
+            <p className="font-bold text-stone-800">旅行日語</p>
+            <p className="text-stone-500 text-sm">90条旅游短句 · 含语法解析</p>
+          </div>
+          <span className="ml-auto text-stone-300 text-xl">→</span>
+        </Link>
       </div>
     )
   }

@@ -11,9 +11,18 @@ function speakJa(text: string) {
   window.speechSynthesis.speak(u)
 }
 
+const LEVEL_COLORS: Record<string, string> = {
+  N5: 'bg-stone-100 text-stone-500',
+  N4: 'bg-blue-50 text-blue-500',
+  N3: 'bg-teal-50 text-teal-600',
+  N2: 'bg-violet-50 text-violet-600',
+  N1: 'bg-red-50 text-red-600',
+}
+
 function PhraseCard({ phrase }: { phrase: TravelPhrase }) {
   const [showReading, setShowReading] = useState(false)
   const [showMeaning, setShowMeaning] = useState(false)
+  const [showGrammar, setShowGrammar] = useState(false)
 
   return (
     <div className="bg-white rounded-2xl px-4 py-3.5 shadow-sm border border-stone-100">
@@ -35,7 +44,7 @@ function PhraseCard({ phrase }: { phrase: TravelPhrase }) {
         </button>
       </div>
 
-      {/* Reading toggle */}
+      {/* Toggles row */}
       <div className="mt-1.5 flex items-center gap-3 flex-wrap">
         <button
           onClick={() => setShowReading(v => !v)}
@@ -49,6 +58,19 @@ function PhraseCard({ phrase }: { phrase: TravelPhrase }) {
         >
           {showMeaning ? '收起中文' : '显示中文'}
         </button>
+        {phrase.grammar && (
+          <button
+            onClick={() => setShowGrammar(v => !v)}
+            className="text-xs text-violet-500 underline underline-offset-2 flex items-center gap-0.5"
+          >
+            {phrase.grammar.level && (
+              <span className={`text-xs px-1 py-px rounded font-medium mr-0.5 ${LEVEL_COLORS[phrase.grammar.level] ?? ''}`}>
+                {phrase.grammar.level}
+              </span>
+            )}
+            {showGrammar ? '收起语法' : '语法解析'}
+          </button>
+        )}
       </div>
 
       {showReading && (
@@ -66,11 +88,31 @@ function PhraseCard({ phrase }: { phrase: TravelPhrase }) {
           💡 {phrase.tip}
         </p>
       )}
+
+      {/* Grammar panel */}
+      {showGrammar && phrase.grammar && (
+        <div className="mt-2.5 bg-violet-50 rounded-xl px-3 py-2.5 space-y-1.5 border border-violet-100">
+          <p className="text-xs font-semibold text-violet-700 flex items-center gap-1.5">
+            <span>📐</span>
+            <span translate="no">{phrase.grammar.pattern}</span>
+          </p>
+          <p className="text-xs text-stone-600 leading-relaxed">
+            {phrase.grammar.explanation}
+          </p>
+          {phrase.grammar.example && (
+            <p className="text-xs text-violet-600 bg-violet-100/60 rounded-lg px-2 py-1.5 leading-relaxed" translate="no">
+              例：{phrase.grammar.example}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   )
 }
 
 function SceneView({ scene, onBack }: { scene: TravelScene; onBack: () => void }) {
+  const n2Count = scene.phrases.filter(p => p.grammar?.level === 'N2' || p.grammar?.level === 'N1').length
+
   return (
     <div>
       {/* Header */}
@@ -85,7 +127,13 @@ function SceneView({ scene, onBack }: { scene: TravelScene; onBack: () => void }
             <h1 className="text-white text-xl font-bold">{scene.name_zh}常用句</h1>
           </div>
         </div>
-        <p className="text-white/60 text-xs mt-2">{scene.phrases.length} 条常用句 · 点击🔊朗读</p>
+        <div className="flex items-center gap-3 mt-2">
+          <p className="text-white/60 text-xs">{scene.phrases.length} 条短句</p>
+          {n2Count > 0 && (
+            <p className="text-white/60 text-xs">· {n2Count} 个N2语法点</p>
+          )}
+          <p className="text-white/60 text-xs">· 点🔊朗读跟读</p>
+        </div>
       </div>
 
       {/* Phrases */}
@@ -93,6 +141,18 @@ function SceneView({ scene, onBack }: { scene: TravelScene; onBack: () => void }
         {scene.phrases.map(p => (
           <PhraseCard key={p.id} phrase={p} />
         ))}
+
+        {/* Grammar level legend */}
+        <div className="bg-stone-50 rounded-2xl px-4 py-3 border border-stone-100 mt-2">
+          <p className="text-xs font-medium text-stone-500 mb-2">语法难度标识</p>
+          <div className="flex flex-wrap gap-2">
+            {(['N5','N4','N3','N2','N1'] as const).map(lv => (
+              <span key={lv} className={`text-xs px-2 py-0.5 rounded font-medium ${LEVEL_COLORS[lv]}`}>
+                {lv} {lv === 'N5' ? '入门' : lv === 'N4' ? '基础' : lv === 'N3' ? '中级' : lv === 'N2' ? '进阶' : '高级'}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -110,7 +170,7 @@ export default function TravelPage() {
       <h1 className="text-2xl font-bold text-stone-900 mb-1" style={{ fontFamily: 'Noto Serif JP, serif' }}>
         旅行日語
       </h1>
-      <p className="text-stone-500 text-sm mb-6">旅游场景必备短句，点击朗读跟读练习</p>
+      <p className="text-stone-500 text-sm mb-6">旅游场景必备短句 · 含语法解析 · 点击朗读跟读</p>
 
       <div className="grid grid-cols-2 gap-3">
         {TRAVEL_SCENES.map(scene => (
@@ -127,10 +187,17 @@ export default function TravelPage() {
         ))}
       </div>
 
-      <div className="mt-6 bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3.5">
+      <div className="mt-4 bg-violet-50 border border-violet-100 rounded-2xl px-4 py-3.5">
+        <p className="text-violet-800 text-sm font-medium mb-1">📐 语法解析功能</p>
+        <p className="text-violet-700 text-xs leading-relaxed">
+          每条短句都附有语法解析，点击「语法解析」展开学习语序、时态、敬语等N5～N2知识点，旅游学日语两不误。
+        </p>
+      </div>
+
+      <div className="mt-3 bg-amber-50 border border-amber-100 rounded-2xl px-4 py-3.5">
         <p className="text-amber-800 text-sm font-medium mb-1">📌 使用技巧</p>
         <p className="text-amber-700 text-xs leading-relaxed">
-          先看日语句子，点🔊听发音并跟读。不懂时再展开读音和中文。每天选一个场景，反复练习直到能直接开口。
+          先看日语句子，点🔊听发音并跟读。不懂时再展开读音和中文。每天选一个场景反复练习，直到能直接开口。
         </p>
       </div>
     </div>
