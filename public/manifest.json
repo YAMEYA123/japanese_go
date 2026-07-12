@@ -1,0 +1,25 @@
+{
+  "name": "日語追劇學習",
+  "short_name": "日語",
+  "description": "用日剧学日语，追本溯源",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F4ED",
+  "theme_color": "#1C1917",
+  "orientation": "portrait",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

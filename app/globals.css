@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F8F4ED;
+  --foreground: #1C1917;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* iOS PWA safe area */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 8px);
+}
+
+/* Smooth tap highlight removal for iOS */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
