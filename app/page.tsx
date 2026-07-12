@@ -108,8 +108,19 @@ export default function HomePage() {
 
       {/* Quote of the day */}
       <div className="bg-gradient-to-br from-stone-900 to-stone-800 rounded-2xl shadow-sm overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/10">
+        <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between">
           <span className="text-xs font-medium text-stone-400 uppercase tracking-wide">🌸 今日一句</span>
+          <button
+            onClick={() => {
+              if (typeof window === 'undefined' || !window.speechSynthesis) return
+              window.speechSynthesis.cancel()
+              const u = new SpeechSynthesisUtterance(quoteOfDay.japanese)
+              u.lang = 'ja-JP'; u.rate = 0.82
+              window.speechSynthesis.speak(u)
+            }}
+            className="text-base opacity-50 active:opacity-20"
+            aria-label="朗读"
+          >🔊</button>
         </div>
         <div className="px-4 py-4">
           <p
