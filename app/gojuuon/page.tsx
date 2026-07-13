@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Volume2 } from 'lucide-react'
 
 function speakJa(text: string) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
@@ -467,19 +468,19 @@ function KanaGrid({
                     speakJa(cell.kana)
                   }}
                   className={`border-l border-stone-100 flex flex-col items-center justify-center py-2 px-1 transition-all duration-150 ${
-                    cell ? (isSel ? 'bg-red-50 cursor-pointer' : 'cursor-pointer active:bg-red-50') : 'bg-stone-50/40'
+                    cell ? (isSel ? 'bg-red-600 cursor-pointer shadow-sm scale-[1.05] z-10 relative' : 'cursor-pointer hover:bg-red-50 active:scale-[0.95] active:bg-red-50') : 'bg-stone-50/40'
                   }`}
                 >
                   {cell ? (
                     <>
                       <span
-                        className={`text-xl font-bold leading-none select-none transition-colors duration-150 ${isSel ? 'text-red-700' : 'text-stone-800'}`}
+                        className={`text-xl font-bold leading-none select-none transition-colors duration-150 ${isSel ? 'text-white' : 'text-stone-800'}`}
                         style={{ fontFamily: 'Noto Serif JP, serif' }}
                         translate="no"
                       >
                         {cell.kana}
                       </span>
-                      <span className={`text-[9px] font-medium mt-1 tracking-wide ${isSel ? 'text-red-500' : 'text-stone-400'}`}>
+                      <span className={`text-[9px] font-medium mt-1 tracking-wide ${isSel ? 'text-white/80' : 'text-stone-400'}`}>
                         {cell.romaji}
                       </span>
                     </>
@@ -562,9 +563,9 @@ export default function GojuuonPage() {
                 <span className="text-sm text-stone-400">— {selected.data.exampleMeaning}</span>
                 <button
                   onClick={() => speakJa(selected.data!.example)}
-                  className="text-sm opacity-40 active:opacity-20 ml-auto"
+                  className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center text-stone-300 active:text-stone-600 transition-colors ml-auto"
                   aria-label="朗读例词"
-                >🔊</button>
+                ><Volume2 size={14} /></button>
               </div>
             </div>
           </div>

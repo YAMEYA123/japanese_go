@@ -29,10 +29,10 @@ export default function ReadingPage() {
 
   return (
     <div className="pb-24">
-      <div className="bg-white border-b border-stone-100 px-4 pt-6 pb-4">
-        <Link href="/dramas" className="text-stone-400 text-sm mb-3 block">← 返回</Link>
-        <h1 className="text-xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }}>文豪短篇阅读</h1>
-        <p className="text-stone-400 text-xs mt-1">川端康成・芥川龍之介・三島由紀夫・太宰治</p>
+      <div className="bg-white border-b border-stone-100 px-4 pt-10 pb-4">
+        <Link href="/dramas" className="text-stone-400 text-sm mb-4 block">← 返回</Link>
+        <h1 className="text-2xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }}>文豪短篇阅读</h1>
+        <p className="text-stone-400 text-sm mt-1">川端康成・芥川龍之介・三島由紀夫・太宰治</p>
       </div>
 
       <div className="px-4 pt-4 space-y-6">

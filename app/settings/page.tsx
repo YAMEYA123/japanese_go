@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useAppStore } from '@/lib/store'
 import { createClient } from '@/lib/supabase'
+import { Smartphone } from 'lucide-react'
 
 export default function SettingsPage() {
   const { userEmail, setUser, srsCards, streakDays, totalReviewed, selectedDramaIds, showRomaji, setShowRomaji } = useAppStore()
@@ -155,7 +156,7 @@ export default function SettingsPage() {
 
       {/* Deploy guide */}
       <div className="bg-amber-50 border border-amber-100 rounded-2xl p-4">
-        <h2 className="text-xs font-medium text-amber-700 uppercase tracking-wide mb-2">📱 添加到主屏幕</h2>
+        <h2 className="text-xs font-medium text-amber-700 uppercase tracking-wide mb-2 flex items-center gap-1.5"><Smartphone size={12} />添加到主屏幕</h2>
         <ol className="space-y-1.5 text-sm text-amber-800">
           <li>1. 在 Safari 中打开本网页</li>
           <li>2. 点击底部「分享」按钮 □↑</li>

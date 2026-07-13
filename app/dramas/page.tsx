@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { DRAMAS } from '@/lib/data/dramas'
 import { useAppStore } from '@/lib/store'
 import { getWordsByDrama } from '@/lib/data/words'
+import { Film, BookOpen, Map, ScrollText } from 'lucide-react'
 
 function DramaCard({ drama, selected, onToggle }: {
   drama: typeof DRAMAS[0]
@@ -19,10 +20,10 @@ function DramaCard({ drama, selected, onToggle }: {
     <div className={`bg-white rounded-2xl shadow-sm border overflow-hidden transition-all ${selected ? 'border-red-200' : 'border-stone-100'}`}>
       <div className="flex items-start p-4 gap-3">
         <div
-          className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 text-2xl"
+          className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0"
           style={{ background: drama.cover_color }}
         >
-          {isBook ? '📖' : '🎬'}
+          {isBook ? <BookOpen size={22} className="text-white" /> : <Film size={22} className="text-white" />}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
@@ -89,10 +90,10 @@ export default function DramasPage() {
       {/* 文豪阅读入口 */}
       <Link
         href="/reading"
-        className="flex items-center gap-3 bg-gradient-to-r from-stone-800 to-stone-700 rounded-2xl px-4 py-3.5 mb-6 active:scale-98 transition-transform"
+        className="flex items-center gap-3 bg-gradient-to-r from-stone-800 to-stone-700 rounded-2xl px-4 py-3.5 mb-6 active:scale-[0.98] transition-transform duration-150"
       >
-        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl shrink-0">
-          📜
+        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+          <ScrollText size={20} className="text-white" />
         </div>
         <div className="flex-1">
           <p className="text-white font-semibold text-sm">文豪短篇阅读</p>
@@ -101,21 +102,21 @@ export default function DramasPage() {
         <span className="text-white/40 text-sm">→</span>
       </Link>
 
-      <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3">🎬 日剧</h2>
+      <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3 flex items-center gap-1.5"><Film size={12} />日剧</h2>
       <div className="space-y-3 mb-6">
         {dramas.map(d => (
           <DramaCard key={d.id} drama={d} selected={selectedDramaIds.includes(d.id)} onToggle={() => toggle(d.id)} />
         ))}
       </div>
 
-      <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3">📖 文学作品</h2>
+      <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3 flex items-center gap-1.5"><BookOpen size={12} />文学作品</h2>
       <div className="space-y-3 mb-6">
         {books.map(d => (
           <DramaCard key={d.id} drama={d} selected={selectedDramaIds.includes(d.id)} onToggle={() => toggle(d.id)} />
         ))}
       </div>
 
-      <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3">🗺️ 旅游场景</h2>
+      <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3 flex items-center gap-1.5"><Map size={12} />旅游场景</h2>
       <div className="space-y-3">
         {travel.map(d => (
           <DramaCard key={d.id} drama={d} selected={selectedDramaIds.includes(d.id)} onToggle={() => toggle(d.id)} />

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { getReadingById, ReadingPassage } from '@/lib/data/readings'
+import { Volume2, BookMarked, GraduationCap, ChevronUp, ChevronDown } from 'lucide-react'
 
 function speakJa(text: string) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
@@ -38,9 +39,9 @@ function ParagraphCard({ para, index }: { para: ReadingPassage['paragraphs'][0];
           <span className="text-xs text-stone-300 font-medium">第 {index + 1} 段</span>
           <button
             onClick={() => speakJa(para.japanese)}
-            className="text-sm opacity-40 active:opacity-20"
+            className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-stone-300 active:text-stone-600 transition-colors"
             aria-label="朗读"
-          >🔊</button>
+          ><Volume2 size={15} /></button>
         </div>
         <p
           className="text-stone-900 text-base leading-loose"
@@ -103,9 +104,9 @@ export default function ReadingDetail() {
         <Link href="/reading" className="absolute top-4 left-4 text-white/80 text-sm">← 返回</Link>
         <button
           onClick={() => speakJa(passage.paragraphs.map(p => p.japanese).join('　'))}
-          className="absolute top-4 right-4 text-white/70 text-lg active:opacity-50"
+          className="absolute top-2 right-2 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-white/70 active:text-white transition-colors"
           aria-label="朗读全文"
-        >🔊</button>
+        ><Volume2 size={18} /></button>
         <div>
           <p className="text-white/70 text-sm mb-1">{passage.author} · {passage.work} · {passage.year}</p>
           <h1 className="text-white text-2xl font-bold" style={{ fontFamily: 'Noto Serif JP, serif' }} translate="no">
@@ -138,10 +139,11 @@ export default function ReadingDetail() {
             className="w-full bg-white rounded-2xl shadow-sm border border-stone-100 px-4 py-3 flex items-center justify-between"
           >
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-stone-700">📚 重要词汇</span>
+              <BookMarked size={14} className="text-stone-500" />
+              <span className="text-sm font-medium text-stone-700">重要词汇</span>
               <span className="text-xs text-stone-400">({passage.vocabulary.length}个)</span>
             </div>
-            <span className="text-stone-300 text-sm">{vocabExpanded ? '▲' : '▼'}</span>
+            {vocabExpanded ? <ChevronUp size={16} className="text-stone-300" /> : <ChevronDown size={16} className="text-stone-300" />}
           </button>
           {vocabExpanded && (
             <div className="mt-2 space-y-2">
@@ -155,8 +157,8 @@ export default function ReadingDetail() {
                       <span className="text-stone-400 text-xs" translate="no">{v.reading}</span>
                       <button
                         onClick={() => speakJa(v.reading)}
-                        className="text-xs opacity-40 active:opacity-20"
-                      >🔊</button>
+                        className="p-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center text-stone-300 active:text-stone-600 transition-colors"
+                      ><Volume2 size={13} /></button>
                     </div>
                     <p className="text-stone-600 text-sm mt-0.5">{v.meaning}</p>
                   </div>
@@ -180,10 +182,11 @@ export default function ReadingDetail() {
             className="w-full bg-white rounded-2xl shadow-sm border border-stone-100 px-4 py-3 flex items-center justify-between"
           >
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-violet-700">📖 语法解析</span>
+              <GraduationCap size={14} className="text-violet-600" />
+              <span className="text-sm font-medium text-violet-700">语法解析</span>
               <span className="text-xs text-stone-400">({passage.grammar_notes.length}个知识点)</span>
             </div>
-            <span className="text-stone-300 text-sm">{grammarExpanded ? '▲' : '▼'}</span>
+            {grammarExpanded ? <ChevronUp size={16} className="text-stone-300" /> : <ChevronDown size={16} className="text-stone-300" />}
           </button>
           {grammarExpanded && (
             <div className="mt-2 space-y-2">
