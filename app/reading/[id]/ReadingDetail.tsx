@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { getReadingById, ReadingPassage } from '@/lib/data/readings'
 
 function speakJa(text: string) {
@@ -84,7 +85,8 @@ function ParagraphCard({ para, index }: { para: ReadingPassage['paragraphs'][0];
   )
 }
 
-export default function ReadingDetail({ id }: { id: string }) {
+export default function ReadingDetail() {
+  const { id } = useParams<{ id: string }>()
   const passage = getReadingById(id)
   const [grammarExpanded, setGrammarExpanded] = useState(false)
   const [vocabExpanded, setVocabExpanded] = useState(false)
