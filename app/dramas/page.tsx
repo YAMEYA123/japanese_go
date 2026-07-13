@@ -86,6 +86,21 @@ export default function DramasPage() {
         <p className="text-stone-500 text-sm mt-1">选择内容，优先学习相关词汇</p>
       </div>
 
+      {/* 文豪阅读入口 */}
+      <Link
+        href="/reading"
+        className="flex items-center gap-3 bg-gradient-to-r from-stone-800 to-stone-700 rounded-2xl px-4 py-3.5 mb-6 active:scale-98 transition-transform"
+      >
+        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl shrink-0">
+          📜
+        </div>
+        <div className="flex-1">
+          <p className="text-white font-semibold text-sm">文豪短篇阅读</p>
+          <p className="text-white/60 text-xs mt-0.5">川端康成・芥川龍之介・三島由紀夫・太宰治</p>
+        </div>
+        <span className="text-white/40 text-sm">→</span>
+      </Link>
+
       <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-3">🎬 日剧</h2>
       <div className="space-y-3 mb-6">
         {dramas.map(d => (
