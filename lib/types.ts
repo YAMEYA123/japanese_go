@@ -40,7 +40,7 @@ export interface Drama {
   description: string
   word_count: number
   cover_color: string
-  category?: 'drama' | 'book' | 'travel'
+  category?: 'drama' | 'book' | 'travel' | 'anime'
   author?: string
 }
 
