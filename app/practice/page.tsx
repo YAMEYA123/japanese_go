@@ -54,14 +54,14 @@ function FlashCard({ word, onReview }: { word: Word; onReview: (q: ReviewQuality
           <>
             <p className="text-xs text-stone-400 mb-4 uppercase tracking-wide">日语读音</p>
             <div
-              className="text-5xl font-bold text-stone-900 mb-3"
+              className="text-5xl font-bold text-stone-900 mb-2"
               style={{ fontFamily: 'Noto Serif JP, serif' }}
               translate="no"
             >
-              {word.japanese}
+              {word.reading}
             </div>
-            <div className="flex items-baseline gap-2 justify-center mb-1">
-              <span className="text-xl text-red-600 font-medium" translate="no">{word.reading}</span>
+            <div className="flex items-center gap-2 justify-center mb-1">
+              <span className="text-sm text-stone-400" translate="no">{word.japanese}</span>
               <button
                 onClick={e => { e.stopPropagation(); speakJa(word.reading || word.japanese) }}
                 className="text-base opacity-60 active:opacity-30"
@@ -207,6 +207,17 @@ function PracticeContent() {
           <div className="text-left">
             <p className="font-bold text-stone-800">旅行日語</p>
             <p className="text-stone-500 text-sm">90条旅游短句 · 含语法解析</p>
+          </div>
+          <span className="ml-auto text-stone-300 text-xl">→</span>
+        </Link>
+        <Link
+          href="/practice/match"
+          className="w-full bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-100 rounded-2xl px-5 py-4 flex items-center gap-4 active:scale-98 transition-transform mt-1"
+        >
+          <span className="text-3xl">🔗</span>
+          <div className="text-left">
+            <p className="font-bold text-stone-800">词汇连连看</p>
+            <p className="text-stone-500 text-sm">读音 ↔ 意思 · 配对消除</p>
           </div>
           <span className="ml-auto text-stone-300 text-xl">→</span>
         </Link>

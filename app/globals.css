@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F8F4ED;
-  --foreground: #1C1917;
+  --background: #0a0a0a;
+  --foreground: #ffffff;
 }
 
 body {
@@ -11,18 +11,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* iOS PWA safe area */
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom, 8px);
 }
 
-/* Tap highlight removal + eliminate 300ms tap delay */
 * {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
-/* Respect system reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.01ms !important;

@@ -55,7 +55,7 @@ export default function EtymologyCard({ word, onReview, showReviewButtons = fals
           <div>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }} translate="no">
-                {word.japanese}
+                {word.reading}
               </span>
               {word.jlpt_level && (
                 <span className="text-xs font-medium bg-stone-800 text-white px-1.5 py-0.5 rounded">
@@ -71,7 +71,7 @@ export default function EtymologyCard({ word, onReview, showReviewButtons = fals
               </button>
             </div>
             <div className="flex items-baseline gap-2 mt-0.5">
-              <span className="text-lg text-stone-500" translate="no">{word.reading}</span>
+              <span className="text-sm text-stone-400" translate="no">{word.japanese}</span>
               {showRomaji && <span className="text-sm text-stone-400">{toRomaji(word.reading)}</span>}
             </div>
             <div className="text-base font-medium text-stone-800 mt-1">{word.meaning_zh}</div>

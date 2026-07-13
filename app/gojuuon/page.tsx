@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Volume2 } from 'lucide-react'
+import Link from 'next/link'
 
 function speakJa(text: string) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return
@@ -576,8 +577,21 @@ export default function GojuuonPage() {
           <KanaGrid key={section.id} section={section} selected={selected} onSelect={setSelected} />
         ))}
 
-        <p className="text-center text-xs text-stone-400 mt-2 mb-2">点击假名查看详情</p>
+        <p className="text-center text-xs text-stone-400 mt-2 mb-4">点击假名查看详情</p>
+
+        <Link
+          href="/gojuuon/match"
+          className="block w-full bg-white rounded-2xl px-5 py-4 shadow-sm border border-stone-100 flex items-center gap-3 active:scale-98 transition-transform mb-6"
+        >
+          <span className="text-2xl">🎮</span>
+          <div className="flex-1">
+            <p className="font-bold text-stone-800 text-sm">假名消消乐</p>
+            <p className="text-stone-400 text-xs mt-0.5">ひら↔カタ↔ローマ字 配对游戏</p>
+          </div>
+          <span className="text-stone-300">→</span>
+        </Link>
       </div>
     </div>
   )
 }
+
