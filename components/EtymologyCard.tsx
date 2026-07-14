@@ -71,7 +71,7 @@ export default function EtymologyCard({ word, onReview, showReviewButtons = fals
               </button>
             </div>
             <div className="flex items-baseline gap-2 mt-0.5">
-              <span className="text-sm text-stone-400" translate="no">{word.japanese}</span>
+              <span className="text-lg text-stone-500" translate="no">{word.japanese}</span>
               {showRomaji && <span className="text-sm text-stone-400">{toRomaji(word.reading)}</span>}
             </div>
             <div className="text-base font-medium text-stone-800 mt-1">{word.meaning_zh}</div>

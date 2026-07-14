@@ -836,9 +836,9 @@ export default function SceneIllustration({ word }: Props) {
               color: style.textLight,
               textShadow: `0 0 20px ${style.accent}66`,
             }}>
-              {word.japanese}
+              {word.reading}
             </span>
-            <span style={{ color: style.textDim, fontSize: '1rem' }}>{word.reading}</span>
+            <span style={{ color: style.textDim, fontSize: '1rem' }}>{word.japanese}</span>
           </div>
           <div style={{ color: style.accent, fontSize: '0.85rem', fontWeight: 600 }}>
             {word.meaning_zh}

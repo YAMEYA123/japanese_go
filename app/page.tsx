@@ -109,9 +109,9 @@ export default function HomePage() {
       </div>
 
       {/* Quote of the day */}
-      <div className="bg-gradient-to-br from-stone-900 to-stone-800 rounded-2xl shadow-sm overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between">
-          <span className="text-xs font-medium text-stone-400 uppercase tracking-wide">今日一句</span>
+      <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden">
+        <div className="px-4 py-3 border-b border-stone-50 flex items-center justify-between">
+          <span className="text-xs font-medium text-stone-500 uppercase tracking-wide">🌸 今日一句</span>
           <button
             onClick={() => {
               if (typeof window === 'undefined' || !window.speechSynthesis) return
@@ -120,26 +120,25 @@ export default function HomePage() {
               u.lang = 'ja-JP'; u.rate = 0.82
               window.speechSynthesis.speak(u)
             }}
-            className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-white/50 active:text-white/90 transition-colors"
+            className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-stone-400 active:text-stone-700 transition-colors"
             aria-label="朗读"
           ><Volume2 size={16} /></button>
         </div>
-        <div className="relative px-4 py-4">
-          <span className="absolute top-0 left-3 text-6xl text-white/8 font-serif leading-none select-none">"</span>
+        <div className="px-4 py-4">
           <p
-            className="text-white text-base font-medium leading-relaxed"
+            className="text-stone-900 text-lg font-bold leading-relaxed"
             style={{ fontFamily: 'Noto Serif JP, serif' }}
             translate="no"
           >
-            {quoteOfDay.japanese}
-          </p>
-          <p className="text-stone-400 text-xs mt-1.5 leading-relaxed" translate="no">
             {quoteOfDay.reading}
           </p>
-          <p className="text-stone-300 text-sm mt-2 leading-relaxed">
+          <p className="text-stone-400 text-sm mt-1 leading-relaxed" translate="no">
+            {quoteOfDay.japanese}
+          </p>
+          <p className="text-stone-600 text-sm mt-2 leading-relaxed">
             {quoteOfDay.meaning_zh}
           </p>
-          <p className="text-stone-500 text-xs mt-2.5">
+          <p className="text-stone-400 text-xs mt-2.5">
             — {quoteOfDay.author_zh}
             {quoteOfDay.author !== quoteOfDay.author_zh && (
               <span translate="no"> / {quoteOfDay.author}</span>
