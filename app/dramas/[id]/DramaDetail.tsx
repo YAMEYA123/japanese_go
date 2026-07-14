@@ -166,9 +166,9 @@ export default function DramaDetail() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-baseline gap-2 flex-wrap">
                   <span className="text-xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }} translate="no">
-                    {word.reading}
+                    {word.japanese}
                   </span>
-                  <span className="text-stone-400 text-sm" translate="no">{word.japanese}</span>
+                  <span className="text-stone-400 text-sm" translate="no">{word.reading}</span>
                   {showRomaji && <span className="text-stone-300 text-xs">{toRomaji(word.reading)}</span>}
                   <button
                     onClick={e => { e.preventDefault(); e.stopPropagation(); speakJa(word.reading || word.japanese) }}
