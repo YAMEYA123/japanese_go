@@ -28,73 +28,62 @@ export default function HomePage() {
   return (
     <div className="px-4 pt-8 pb-4 space-y-5">
       {/* Greeting */}
-      <div>
-        <p className="text-stone-400 text-sm">{greeting.zh}</p>
-        <h1 className="text-2xl font-bold text-stone-900 mt-0.5" style={{ fontFamily: 'Noto Serif JP, serif' }}>
-          {greeting.jp}
-        </h1>
+      <div className="flex items-end justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }}>
+            {greeting.jp}
+          </h1>
+          <p className="text-stone-400 text-sm mt-0.5">{greeting.zh} · 今日も頑張ろう</p>
+        </div>
+        {dueCount > 0 && (
+          <Link href="/practice?mode=10min" className="shrink-0 bg-red-500 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm active:bg-red-600 transition-colors">
+            {dueCount} 词待复习
+          </Link>
+        )}
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-3 gap-3">
-        <StatCard
-          Icon={Flame}
-          iconColor="text-orange-500"
-          iconBg="bg-orange-100"
-          value={streakDays}
-          label="连续天数"
-          color="from-orange-50 to-red-50"
-        />
-        <StatCard
-          Icon={BookOpen}
-          iconColor="text-blue-500"
-          iconBg="bg-blue-100"
-          value={totalLearned}
-          label="已学词数"
-          color="from-blue-50 to-indigo-50"
-        />
-        <StatCard
-          Icon={Clock}
-          iconColor={dueCount > 0 ? 'text-red-500' : 'text-emerald-500'}
-          iconBg={dueCount > 0 ? 'bg-red-100' : 'bg-emerald-100'}
-          value={dueCount}
-          label="待复习"
-          color={dueCount > 0 ? 'from-red-50 to-rose-50' : 'from-green-50 to-emerald-50'}
-          highlight={dueCount > 0}
-        />
+      <div className="grid grid-cols-3 gap-2.5">
+        <StatCard Icon={Flame} iconColor="text-orange-500" iconBg="bg-orange-100" value={streakDays} label="连续天数" color="from-orange-50 to-amber-50" />
+        <StatCard Icon={BookOpen} iconColor="text-blue-500" iconBg="bg-blue-100" value={totalLearned} label="已学词数" color="from-blue-50 to-sky-50" />
+        <StatCard Icon={Clock} iconColor={dueCount > 0 ? 'text-red-500' : 'text-emerald-500'} iconBg={dueCount > 0 ? 'bg-red-100' : 'bg-emerald-100'} value={dueCount} label="待复习" color={dueCount > 0 ? 'from-red-50 to-rose-50' : 'from-emerald-50 to-teal-50'} highlight={dueCount > 0} />
       </div>
 
-      {/* Quick practice */}
+      {/* Quick practice — 2+1 grid layout */}
       <div>
-        <h2 className="text-xs font-medium text-stone-500 uppercase tracking-wide mb-2.5">碎片时间练习</h2>
-        <div className="space-y-2">
+        <h2 className="text-xs font-semibold text-stone-400 tracking-widest mb-2.5">碎片练习</h2>
+        <div className="grid grid-cols-2 gap-2 mb-2">
           {[
-            { mode: '1min', label: '1分钟闪记', sub: '一张词源卡，随时随地', Icon: Zap, iconBg: 'bg-amber-100', iconColor: 'text-amber-600', href: '/practice?mode=1min' },
-            { mode: '5min', label: '5分钟填空', sub: '3词填空练习', Icon: BookOpen, iconBg: 'bg-blue-100', iconColor: 'text-blue-600', href: '/practice?mode=5min' },
-            { mode: '10min', label: '10分钟复习', sub: '全面巩固，系统复习', Icon: Target, iconBg: 'bg-violet-100', iconColor: 'text-violet-600', href: '/practice?mode=10min' },
+            { mode: '1min', label: '1分钟', sub: '一词闪记', Icon: Zap, bg: 'bg-amber-50 border-amber-100', iconBg: 'bg-amber-100', iconColor: 'text-amber-600', href: '/practice?mode=1min' },
+            { mode: '5min', label: '5分钟', sub: '翻卡复习', Icon: BookOpen, bg: 'bg-blue-50 border-blue-100', iconBg: 'bg-blue-100', iconColor: 'text-blue-600', href: '/practice?mode=5min' },
           ].map(m => (
-            <Link
-              key={m.mode}
-              href={m.href}
-              className="bg-white rounded-2xl px-4 py-3 flex items-center gap-3.5 shadow-sm border border-stone-100 active:scale-[0.98] transition-transform duration-150"
-            >
-              <div className={`w-10 h-10 rounded-xl ${m.iconBg} flex items-center justify-center shrink-0`}>
-                <m.Icon size={18} className={m.iconColor} />
+            <Link key={m.mode} href={m.href} className={`${m.bg} border rounded-2xl px-3.5 py-3.5 flex flex-col gap-2 active:scale-[0.97] transition-transform duration-150`}>
+              <div className={`w-9 h-9 rounded-xl ${m.iconBg} flex items-center justify-center`}>
+                <m.Icon size={16} className={m.iconColor} />
               </div>
-              <div className="flex-1">
-                <div className="font-semibold text-stone-800 text-sm">{m.label}</div>
-                <div className="text-xs text-stone-400 mt-0.5">{m.sub}</div>
+              <div>
+                <div className="font-bold text-stone-800 text-sm">{m.label}</div>
+                <div className="text-xs text-stone-400">{m.sub}</div>
               </div>
-              <span className="text-stone-300 text-sm">→</span>
             </Link>
           ))}
         </div>
+        <Link href="/practice?mode=10min" className="bg-white border border-stone-100 rounded-2xl px-4 py-3 flex items-center gap-3 shadow-sm active:scale-[0.98] transition-transform duration-150">
+          <div className="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center shrink-0">
+            <Target size={16} className="text-violet-600" />
+          </div>
+          <div className="flex-1">
+            <div className="font-bold text-stone-800 text-sm">10分钟系统复习</div>
+            <div className="text-xs text-stone-400">词源卡片 · 全面巩固</div>
+          </div>
+          <span className="text-stone-300 text-sm">→</span>
+        </Link>
       </div>
 
       {/* Word of the day */}
       <div className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden">
         <div className="px-4 py-3 flex items-center justify-between border-b border-stone-50">
-          <span className="text-xs font-medium text-stone-500 uppercase tracking-wide">✨ 今日一词</span>
+          <span className="text-xs font-semibold text-stone-400 tracking-widest">今日一词</span>
           <Link href={`/word/${wordOfDay.id}`} className="text-xs text-red-600 font-medium">
             详细解析 →
           </Link>
@@ -105,12 +94,12 @@ export default function HomePage() {
           </div>
         )}
         <div className="px-4 py-3">
-          <div className="flex items-baseline gap-2 mb-1">
-            <span className="text-3xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }} translate="no">
-              {wordOfDay.japanese}
+          <div className="flex items-baseline gap-2 mb-1" translate="no">
+            <span className="text-3xl font-bold text-stone-900" style={{ fontFamily: 'Noto Serif JP, serif' }}>
+              {wordOfDay.reading}
             </span>
-            <span className="text-stone-400 text-base" translate="no">{wordOfDay.reading}</span>
-            {showRomaji && <span className="text-stone-300 text-sm">{toRomaji(wordOfDay.reading)}</span>}
+            <span className="text-stone-400 text-sm">{wordOfDay.japanese}</span>
+            {showRomaji && <span className="text-stone-300 text-xs">{toRomaji(wordOfDay.reading)}</span>}
           </div>
           <p className="text-stone-700 font-medium">{wordOfDay.meaning_zh}</p>
           {wordOfDay.scene_context && (
@@ -212,7 +201,7 @@ function StatCard({
       <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center mb-1.5`}>
         <Icon size={18} className={iconColor} />
       </div>
-      <div className={`text-3xl font-bold ${highlight ? 'text-red-600' : 'text-stone-800'}`} style={{ fontFamily: 'Noto Serif JP, serif' }}>{value}</div>
+      <div className={`text-3xl font-bold tabular-nums ${highlight ? 'text-red-600' : 'text-stone-800'}`}>{value}</div>
       <div className="text-xs text-stone-500 mt-0.5">{label}</div>
     </div>
   )
